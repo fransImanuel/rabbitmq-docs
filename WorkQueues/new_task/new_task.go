@@ -22,10 +22,11 @@ func main()  {
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
-	ch,err := conn.Channel()
+	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
+	defer ch.Close()
 
-	q,err := ch.QueueDeclare(
+	q, err := ch.QueueDeclare(
 		"task_queue", // name
 		true,   // durable
 		false,   // delete when unused

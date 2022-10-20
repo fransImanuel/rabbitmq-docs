@@ -32,6 +32,7 @@ func main() {
 		nil,     // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
+	
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
