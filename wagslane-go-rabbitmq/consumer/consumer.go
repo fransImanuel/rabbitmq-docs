@@ -16,10 +16,11 @@ func main() {
 	}
 	defer conn.Close()
 
-	consumer, err := rabbitmq.NewConsumer(
+	_, err = rabbitmq.NewConsumer(
 		conn,
 		func(d rabbitmq.Delivery) rabbitmq.Action {
 			log.Printf("consumed: %v", string(d.Body))
+			d.Ack(false)
 			// rabbitmq.Ack, rabbitmq.NackDiscard, rabbitmq.NackRequeue
 			return rabbitmq.Ack
 		},
@@ -34,5 +35,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer consumer.Close()
+
+	ch := make(chan int)
+	<-ch
+	// defer consumer.Close()
 }
